@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+		<script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular-animate.min.js"></script>
+		<style>
+		#top-state{
+				height: 50px;
+				background: #515151;
+				font:"微软雅黑";
+				color: #fff; 
+				text-align: center;
+				padding: 0px;
+				margin: 0px;
+				border: 0px; 
+				width: 100%;
+				
+			}
+			#date{
+				top: 30%;
+		        position: relative;	
+			}
+			#today{
+				top: 30%;
+				right: 10%;
+				position: relative;
+				float: right;
+			}
+			
+		#week-state{
+				padding: 0px;
+				margin: 0px;	
+				
+			
+			}
+			#week-moban{
+				height: 35px;
+			
+				padding: 0px;
+				margin: 0px;
+			}
+			 #week-mobanul{
+				
+				margin: 0px;
+				padding: 0px;
+				list-style: none;	
+			    }
+			    #week-mobanul li{
+				   height: 15px;
+		   		   margin-bottom: 10px;
+				   margin-top: 10px;
+				   float: left;
+				   width: 14%;
+				   color: #aaa;
+				   font-size: 12px;
+				   text-align: center;
+			    }
+			
+			#week{
+				margin: 0px;
+				padding: 0px;
+				width: 100%;  
+				
+				height: ;
+			} 
+			#mycanva{
+				position: absolute;
+				top: 93px;
+				left: 8px; 
+				
+			}
+			#weekDate{
+				height: 40px;
+				top: 0;
+				left: 0;
+				clear: left;
+				background: rgba(255,0,0,0.2);
+				position: relative;
+				z-index: 2;
+				
+			} 
+			    #recentWeek{
+				clear: left;
+				padding: 0px;
+				margin: 0px;
+				list-style: none;	
+						
+			   }
+			    #recentWeek li{
+				   margin-bottom: 10px;
+				   margin-top: 10px;
+				   text-align: center;
+				   float: left;
+				   width: 14%;		
+				   
+				   padding: 0px;
+				   
+				   font:15px  "微软雅黑" ;	  
+			    }
+			    #recentWeek li:last-child{
+				   width: calc(16% - 14px);			
+			    } 
+			  
+			    .aweek{
+			    	
+			    	padding-bottom: 10px; 
+			    	display: block; 
+			    }
+		    
+		        .month{
+		        	padding: 0px; 
+		        	margin: 0px;
+		        	display: none;
+		        	font:15px "微软雅黑"  ;
+		        			        	
+		        }
+		    #button{
+		         margin: 0px;
+		         padding: 0px;
+		    	height: 30px;
+		    	text-align: center;
+		    	font: 15px "微软雅黑";
+		   border-bottom: 1px solid #e4e4e4;
+		  
+		    }
+		       #donghua{
+		  	   top: 5px;
+		  	   position: relative;
+		  	   
+		  
+		      }
+		#bottom-tip{
+			width: 100%;
+			float: left;
+			height: 45px;
+			box-shadow: 0px 2px 5px #d3d3d3; 
+			
+			
+			
+		}  
+		    #bottom-ul{
+			list-style: none;
+			margin: 10px;
+			padding: 0px;
+		   }
+		
+		  #bottom-ul li{
+		  	line-height: 45px;
+		  	width: 33%;
+		  	float: left;
+		  	text-align: center;
+		  }
+		   #bottom-ul li span{
+		  	display: block;
+		  	font: 15px "微软雅黑" ;
+		  } 
+		  .active{
+		  	color: #6e8dba;
+		  }
+		 
+		</style>
+		
+	</head>
+	<body>
+		
+		<div id="top-state">
+			<span id="date"> 2017-09-14</span>
+			<span id="today">今天</span>
+		</div>
+		 
+		<div id="week-state">
+			
+			<div id="week-moban">
+					<ul id="week-mobanul">
+					<li>日</li> <li>一</li> <li>二</li> <li>三</li>
+					<li>四</li> <li>五</li> <li>六</li>
+				    </ul>
+			</div>
+			
+			<div id="week" ng-app="myApp" ng-controller="myCtrl">
+				<canvas id="mycanva" height="40px" width="200px"></canvas>
+				<div id="weekDate" >
+					<ul id="recentWeek">
+					<li  id="aweek" class="aweek" ng-repeat="x in weeks track by $index">{{x.date}}</li>
+					<li class="month" ng-repeat="x in month track by $index">{{x.date}}</li>
+				    </ul>
+				</div>
+				<script>
+					var app = angular.module('myApp',  ['ngAnimate']);
+                   app.controller('myCtrl', function($scope) {
+                   	var day=3;
+                   	var toDayDate=14;
+                   	
+                   	$scope.month=[{
+                   		"date":"1",
+                        "day":day
+                   	}];
+                   	for(var i=0;i<day;i++){
+                   		$scope.month.unshift({"date":""});
+                   	};
+                   	for( i=2;i<31;i++){
+                   		day=day+1;
+                   		if(day==8)   day=1;
+                   		$scope.month.push({"date":i,"day":day});	
+                   	}
+                   	var handleDay=(toDayDate-1)%7+day;
+                   	if(handleDay>7) handleDay=handleDay-7;
+                   	
+                   	$scope.weeks=[{
+                   		"date":toDayDate,
+                        "day":handleDay
+                   	}];
+                   	if(handleDay!=7){
+                   		for(i=1;i<handleDay;i++){
+                   			$scope.weeks.unshift({"date":toDayDate-i,"day":i})
+                   		}
+                   		for(i=1;i<8-handleDay;i++){
+                   			$scope.weeks.push({"date":toDayDate+i,"day":handleDay+i})
+                   		}
+                   	}
+                   	
+                     });
+				</script>
+				
+				<div id="button">
+				<span id="donghua" >↕↕</span>	
+				</div>
+				
+			<script src="js/jquery-3.3.1.js"></script>
+				<script type="text/javascript">			
+					var day=3;
+							var today=14;
+							var dayNum=30;
+							var state='week';
+							
+					$(document).ready(function(){
+						var a="+=";
+							moren(state);
+						$("#donghua").click(function(){
+						  if(a=="+="){
+						    $("#weekDate").animate({height:a+'160px'},function(){
+						    	
+						    	$(".month").css("display","block");
+						    	$("#mycanva").css("height","200px");
+						    	 moren(state);
+						    });
+						   $(".aweek").css("display","none");
+						    state='month';
+						    a="-=";
+							}
+						  else{
+						 	 $("#weekDate").animate({height:a+'160px'},function(){
+						 	 	moren(state);
+						 	 	$(".aweek").css("display","block");
+						    	$(".month").css("display","none");
+						    	
+						    	$("#mycanva").css("height","40px"); 
+						    	
+						    
+						 	 });
+						 	
+						 	state='week';
+						 	
+						     a="+="; 
+						  }
+						});   
+						
+//						$("#recentWeek").find("li").click(function(){
+//							if(state=='month'){
+//							if($(this).index()==(today+6+day))
+//							$(this).css("color","white"); 	
+//							}
+//							else{
+//								if($(this).index()==(today-1+day)%7)
+//							$(this).css("color","white"); 	
+//							}
+//						});
+						
+						 }); 
+						 
+						 function moren(state){
+							var aaa=document.getElementsByClassName("aweek");
+								aaa[(today-1+day)%7].style.color='white';
+							var aaaa=document.getElementsByClassName("month");
+								aaaa[today-1+day].style.color='white';
+							
+							
+						 	var c=document.getElementById("mycanva");
+					        var ctx=c.getContext("2d");
+					        var size=($(window).width()-16)*0.14;
+					        	var cc=document.getElementById("weekDate");
+                        c.height=cc.offsetHeight; 
+                      	c.width=$(window).width()-16; 
+						 	if(state=='week'){
+						 		draw((today+day-1)%7*size+size/2,20);
+						 	}
+						 	else { 
+						 		draw((today+day-1)%7*size+size/2,Math.floor((today+day-1)/7)*40+20);
+						 	}
+						 	ctx.fillStyle="#2a579a";
+						        ctx.fill(); 
+						 }
+						 
+						 
+					var c=document.getElementById("mycanva");
+					var ctx=c.getContext("2d");
+					  var size=($(window).width()-16)*0.14;
+						
+						
+						
+                      document.onclick=function(event){
+                      	var cc=document.getElementById("weekDate");
+                        c.height=cc.offsetHeight; 
+                      	c.width=$(window).width()-16; 
+                      
+						if(event.clientY<294){
+						var x=Math.floor(event.clientX/size);
+						var y=Math.floor((event.clientY-94)/40);
+						
+						if(x<day&&(state=='month')&&y==0)  moren(state);
+						else if(x>=(dayNum+day)%7&&y==Math.floor((dayNum+day-1)/7))  moren(state);
+						else {
+							ctx.clearRect(0,0,c.width,c.height);
+							moren(state);
+						draw(x*size+size/2,y*40+20);
+						}
+						}
+//						alert(event.clientX+"haha"+event.clientY+"haha"+size);
+						
+						
+						
+//						if(state=='month'){
+//							if(x==((today+day-1)%7)&&y==Math.floor((today+day-1)/7)){
+//						        ctx.fillStyle="#2a579a";
+//						        ctx.fill(); 
+//							}
+//						}
+//						else{
+//							if(x==((today+day-1)%7)){
+//						        ctx.fillStyle="#2a579a";
+//						        ctx.fill(); 
+//							}
+//						}
+					};
+				
+					 
+					function draw(x,y){
+					
+						
+						//alert(c.width+"haha"+c.height);
+						ctx.beginPath();
+						ctx.arc(x,y,15,0,2*Math.PI);
+						ctx.stroke();
+					}
+					
+					
+					
+				</script> 
+			</div>
+			<div id="bottom-tip" >
+				<ul id="bottom-ul" >
+					<li><span class="ziti">已设置提醒</span></li>
+					<li><span class="ziti">创建时间</span></li>
+					<li><span class="ziti">最后发言时间</span></li>
+				</ul>
+				<script>
+					$(document).ready(function(){
+						$("#bottom-ul").find(".ziti:first").addClass("active");
+						$("#bottom-ul").find(".ziti").click(function(){
+							$("#bottom-ul").find(".ziti").removeClass("active");
+							$(this).addClass("active");
+						});
+					});
+				</script>
+			</div>
+		</div>
+		
+	</body>
+</html>
